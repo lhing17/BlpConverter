@@ -74,11 +74,12 @@ public class GuiMain extends JFrame {
             filterButton.setEnabled(false);
         });
 
-        addRadioButton(row2, filterRadioGroup, "默认滤镜", e -> {
+        JRadioButton defaultRadio =  addRadioButton(row2, filterRadioGroup, "默认滤镜", e -> {
             converter.setFilterType(EnumFilterType.DEFAULT);
             filterField.setEnabled(false);
             filterButton.setEnabled(false);
         });
+        defaultRadio.setSelected(true);
 
         addRadioButton(row2, filterRadioGroup, "自定义滤镜", e -> {
             converter.setFilterType(EnumFilterType.SELF_DEFINED);
@@ -109,11 +110,12 @@ public class GuiMain extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    private void addRadioButton(JPanel row2, ButtonGroup filterRadioGroup, String name, ActionListener actionListener) {
-        JRadioButton filterRadio0 = new JRadioButton(name);
-        filterRadioGroup.add(filterRadio0);
-        row2.add(filterRadio0);
-        filterRadio0.addActionListener(actionListener);
+    private JRadioButton addRadioButton(JPanel row2, ButtonGroup filterRadioGroup, String name, ActionListener actionListener) {
+        JRadioButton filterRadio = new JRadioButton(name);
+        filterRadioGroup.add(filterRadio);
+        row2.add(filterRadio);
+        filterRadio.addActionListener(actionListener);
+        return filterRadio;
     }
 
     private JTextField selectDirectory(JPanel jPanel, String s) {

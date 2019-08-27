@@ -50,7 +50,7 @@ public class BlpConverter {
     private static final String COMMAND_BUTTONS_DISABLED = "CommandButtonsDisabled";
 
     public BlpConverter() {
-        this(EnumFilterType.NONE);
+        this(EnumFilterType.DEFAULT);
     }
 
     public BlpConverter(EnumFilterType filterType) {
