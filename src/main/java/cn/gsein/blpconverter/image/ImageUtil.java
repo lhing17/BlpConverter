@@ -1,8 +1,11 @@
 package cn.gsein.blpconverter.image;
 
+import cn.gsein.blpconverter.enums.EnumFilterType;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
@@ -40,10 +43,31 @@ public final class ImageUtil {
         return tag;
     }
 
-    public static BufferedImage addActiveBorder(BufferedImage origin) throws IOException {
+    public static BufferedImage addActiveBorder(BufferedImage origin, EnumFilterType filterType,
+                                                String filterFileUrl){
         BufferedImage result = copy(origin);
-        BufferedImage border = ImageIO.read(Objects.requireNonNull(
-                ImageUtil.class.getClassLoader().getResourceAsStream("active_border.png")));
+        BufferedImage border = null;
+        switch (filterType) {
+            case NONE:
+                return result;
+            case DEFAULT:
+                try {
+                    border = ImageIO.read(Objects.requireNonNull(
+                            ImageUtil.class.getClassLoader().getResourceAsStream("active_border.png")));
+                } catch (IOException e) {
+                    throw new IllegalStateException("未找到默认滤镜，请使用自定义滤镜");
+                }
+                break;
+            case SELF_DEFINED:
+                try {
+                    border = ImageIO.read(new FileInputStream(filterFileUrl));
+                } catch (IOException e) {
+                    throw new IllegalStateException("滤镜图片无效");
+                }
+                break;
+
+        }
+
         Graphics graphics = result.getGraphics();
         graphics.drawImage(border, 0, 0, null);
         return result;

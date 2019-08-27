@@ -1,5 +1,6 @@
 package cn.gsein.blpconverter.image;
 
+import cn.gsein.blpconverter.enums.EnumFilterType;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
 import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
@@ -19,6 +20,14 @@ import java.nio.file.Paths;
  */
 public class BlpConverter {
 
+    /**
+     * 使用滤镜的方式
+     */
+    private EnumFilterType filterType;
+    /**
+     * 滤镜图片地址
+     */
+    private String filterFileUrl;
     /**
      * 主动技能图标位置
      */
@@ -40,8 +49,16 @@ public class BlpConverter {
      */
     private static final String COMMAND_BUTTONS_DISABLED = "CommandButtonsDisabled";
 
+    public BlpConverter() {
+        this(EnumFilterType.NONE);
+    }
+
+    public BlpConverter(EnumFilterType filterType) {
+        this.filterType = filterType;
+    }
+
     public static void main(String[] args) {
-        new BlpConverter().convert("G:\\1", "G:\\2");
+        new BlpConverter(EnumFilterType.NONE).convert("G:\\1", "G:\\2");
     }
 
     public void convert(String inputDirectory, String outputDirectory) {
@@ -67,7 +84,7 @@ public class BlpConverter {
                     BufferedImage resized = ImageUtil.resizeTo64(image);
 
                     // 加上主动技能的边框
-                    BufferedImage activeBordered = ImageUtil.addActiveBorder(resized);
+                    BufferedImage activeBordered = ImageUtil.addActiveBorder(resized, filterType, filterFileUrl);
                     // 加上被动技能的边框并调暗
                     BufferedImage dark = ImageUtil.addPassiveBorder(ImageUtil.adjustBrightness(resized, -64));
 
@@ -143,5 +160,21 @@ public class BlpConverter {
                 new FileOutputStream(Paths.get(dirPath, prefix + name + ".blp").toString());
         ImageIO.write(image, "blp", out);
         out.close();
+    }
+
+    public EnumFilterType getFilterType() {
+        return filterType;
+    }
+
+    public void setFilterType(EnumFilterType filterType) {
+        this.filterType = filterType;
+    }
+
+    public String getFilterFileUrl() {
+        return filterFileUrl;
+    }
+
+    public void setFilterFileUrl(String filterFileUrl) {
+        this.filterFileUrl = filterFileUrl;
     }
 }
