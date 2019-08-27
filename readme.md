@@ -4,8 +4,16 @@
 
 可以根据提供图片生成war3需要使用的blp图片，并自动按commandbutton和commandbuttondisabled目录放置，可以直接导入到地图中。
 
+
 ### 运行环境
 项目使用Java开发，需要安装JRE1.8+版本。
+
+### 项目构建
+1. 项目使用maven进行构建，首先安装maven，并配置环境变量。
+2. 在项目路径下执行以下命令，即可生成可执行的jar包
+```
+mvn clean package
+```
 
 ### 使用方法
 - 设置输入目录和输出目录
